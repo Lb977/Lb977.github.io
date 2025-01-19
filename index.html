@@ -91,24 +91,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>�����ȴ򿪰л������ֳ������δ��롣<br>Welcome to index.php<br>&lt;?php<br>&#x2F;&#x2F;flag is in flag.php<br>&#x2F;&#x2F;WTF IS THIS?<br>&#x2F;&#x2F;Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>&#x2F;&#x2F;And Crack It!<br>class Modifier {<br>    protected  $var;<br>    public function append($value){<br>        include($value);<br>    }<br>    public function __invoke(){<br>        $this-&gt;append($this-&gt;var);<br>    }<br>}</p>
-<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file&#x3D;’index.php’){<br>        $this-&gt;source &#x3D; $file;<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;<br>    }<br>    public function __toString(){<br>        return $this-&gt;str-&gt;source;<br>    }</p>
-<pre><code>public function __wakeup()&#123;
-    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;
-        echo &quot;hacker&quot;;
-        $this-&gt;source = &quot;index.php&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>}</p>
-<p>class Test{<br>    public $p;<br>    public function __construct(){<br>        $this-&gt;p &#x3D; array();<br>    }</p>
-<pre><code>public function __get($key)&#123;
-    $function = $this-&gt;p;
-    return $function();
-&#125;
-</code></pre>
-<p>}</p>
-<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a&#x3D;new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}</p>
+        <p>�����ȴ򿪰л��������м��δ��롣</p>
 
       
     </div>
