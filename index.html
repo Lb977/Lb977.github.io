@@ -69,6 +69,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-报错注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" class="article-date">
+  <time class="dt-published" datetime="2025-02-07T11:15:31.000Z" itemprop="datePublished">2025-02-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>updatexml<br>updatexml 是 MySQL 数据库中的一个函数，它用于更新 XML 类型的数据字段中指定路径的值。该函数接受三个参数：要更新的 XML 字段、要更新的 XML 路径以及新的值。具体来说，updatexml 函数的基本语法如下：</p>
+<p>UPDATEXML(xml_document, XPath_string, new_value)<br>xml_document：XML文档对象的名称，是一个字符串格式。<br>XPath_string：Xpath格式的字符串，用于指定需要更新的XML节点的路径。<br>new_value：新的值，用于替换查找到的符合条件的XML节点内容，也是一个字符串格式。<br>updatexml 函数的作用是改变文档中符合条件的节点的值。当 XPath_string 格式出现错误时，MySQL 会爆出 XPath 语法错误（xpath syntax error），这一点常被用于 SQL 注入攻击中，通过构造错误的 XPath 表达式来触发错误，从而获取数据库信息。例如，攻击者可能会尝试以下 SQL 语句来探测数据库名称：</p>
+<p>‘ and updatexml(1,concat(0x7e,database(),0x7e),1)#</p>
+<p>floor<br>floor的报错原理：利用select count(*),floor(rand(0)*2)x from information_schema.character_sets group by x;导致数据库报错，通过concat函数连接注入语句与floor(rand(0)*2)函数，实现将注入结果与报错信息回显的注入方式。</p>
+<p>rand()函数<br>rand()可以产生一个在0和1之间的随机数</p>
+<p>floor (rand(0)<em>2)函数<br>floor函数的作用就是返回小于等于括号内该值的最大整数。<br>rand()本身是返回0~1的随机数，但在后面</em>2就变成了返回0~2之间的随机数。<br>配合上floor函数就可以产生确定的两个数，即0和1。<br>并且结合固定的随机数种子0，它每次产生的随机数列都是相同的值。<br>此处的myclass 表为含有四行数据的表。<br>结合上述的函数，每次产生的随机数列都是 0 1 1 0<br>group by 函数<br>group by 函数，作用就是分类汇总。</p>
+<p>exp</p>
+<p>MySQL中的EXP()函数用于将E提升为指定数字X的幂，这里E(2.718281 …)是自然对数的底数。<br>EXP(X)<br>该函数返回E的X次方后的值，如下所示：</p>
+<p>mysql&gt; select exp(3);<br>+——————–+<br>| exp(3)             |<br>+——————–+<br>| 20.085536923187668 |<br>+——————–+<br>1 row in set (0.00 sec)</p>
+<p>mysql&gt;<br>我们可以用 ~ 运算符按位取反的方式得到一个最大值，该运算符也可以处理一个字符串，经过其处理的字符串会变成大一个很大整数足以超过 MySQL 的 Double 数组范围，从而报错输出：</p>
+<p>mysql&gt; select ~(select version());<br>+———————-+<br>| ~(select version())  |<br>+———————-+<br>| 18446744073709551610 |<br>+———————-+<br>1 row in set, 1 warning (0.00 sec)</p>
+<p>mysql&gt; select exp(<del>(select * from(select version())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘5.5.29’ from dual)))’</p>
+<p>mysql&gt; select exp(<del>(select * from(select user())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘root@localhost’ from dual)))’</p>
+<p>mysql&gt; select exp(<del>(select * from(select database())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘ctf’ from dual)))’<br>mysql&gt;<br>如上图所示，成功报错并输出了数据。但是事实证明，在 MySQL&gt;5.5.53 之后，exp() 报错不能返回我们的查询结果，而只会得到一个报错：</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" data-id="cm6uorbhc00007sx1226u0up5" data-title="报错注入" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-CISCN-2019-初赛-Love-Math" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/" class="article-date">
@@ -623,58 +675,12 @@ static class MyObject implements Serializable &#123;
 
 
   
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/12/26/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2024-12-26T12:44:34.894Z" itemprop="datePublished">2024-12-26</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/12/26/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/26/hello-world/" data-id="cm55bihfw00005ox1903cc15u" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -705,6 +711,10 @@ static class MyObject implements Serializable &#123;
       <ul>
         
           <li>
+            <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
+          </li>
+        
+          <li>
             <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/">[CISCN 2019 初赛]Love Math</a>
           </li>
         
@@ -718,10 +728,6 @@ static class MyObject implements Serializable &#123;
         
           <li>
             <a href="/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/">[安洵杯 2019]easy_web</a>
-          </li>
-        
-          <li>
-            <a href="/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/">[极客大挑战 2019]Havefun</a>
           </li>
         
       </ul>

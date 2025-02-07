@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>报错注入 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="updatexmlupdatexml 是 MySQL 数据库中的一个函数，它用于更新 XML 类型的数据字段中指定路径的值。该函数接受三个参数：要更新的 XML 字段、要更新的 XML 路径以及新的值。具体来说，updatexml 函数的基本语法如下： UPDATEXML(xml_document, XPath_string, new_value)xml_document：XML文档对象的名称，是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="报错注入">
+<meta property="og:url" content="http://example.com/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="updatexmlupdatexml 是 MySQL 数据库中的一个函数，它用于更新 XML 类型的数据字段中指定路径的值。该函数接受三个参数：要更新的 XML 字段、要更新的 XML 路径以及新的值。具体来说，updatexml 函数的基本语法如下： UPDATEXML(xml_document, XPath_string, new_value)xml_document：XML文档对象的名称，是">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-07T11:15:31.000Z">
+<meta property="article:modified_time" content="2025-02-07T11:30:53.553Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-报错注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" class="article-date">
+  <time class="dt-published" datetime="2025-02-07T11:15:31.000Z" itemprop="datePublished">2025-02-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      报错注入
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>updatexml<br>updatexml 是 MySQL 数据库中的一个函数，它用于更新 XML 类型的数据字段中指定路径的值。该函数接受三个参数：要更新的 XML 字段、要更新的 XML 路径以及新的值。具体来说，updatexml 函数的基本语法如下：</p>
+<p>UPDATEXML(xml_document, XPath_string, new_value)<br>xml_document：XML文档对象的名称，是一个字符串格式。<br>XPath_string：Xpath格式的字符串，用于指定需要更新的XML节点的路径。<br>new_value：新的值，用于替换查找到的符合条件的XML节点内容，也是一个字符串格式。<br>updatexml 函数的作用是改变文档中符合条件的节点的值。当 XPath_string 格式出现错误时，MySQL 会爆出 XPath 语法错误（xpath syntax error），这一点常被用于 SQL 注入攻击中，通过构造错误的 XPath 表达式来触发错误，从而获取数据库信息。例如，攻击者可能会尝试以下 SQL 语句来探测数据库名称：</p>
+<p>‘ and updatexml(1,concat(0x7e,database(),0x7e),1)#</p>
+<p>floor<br>floor的报错原理：利用select count(*),floor(rand(0)*2)x from information_schema.character_sets group by x;导致数据库报错，通过concat函数连接注入语句与floor(rand(0)*2)函数，实现将注入结果与报错信息回显的注入方式。</p>
+<p>rand()函数<br>rand()可以产生一个在0和1之间的随机数</p>
+<p>floor (rand(0)<em>2)函数<br>floor函数的作用就是返回小于等于括号内该值的最大整数。<br>rand()本身是返回0~1的随机数，但在后面</em>2就变成了返回0~2之间的随机数。<br>配合上floor函数就可以产生确定的两个数，即0和1。<br>并且结合固定的随机数种子0，它每次产生的随机数列都是相同的值。<br>此处的myclass 表为含有四行数据的表。<br>结合上述的函数，每次产生的随机数列都是 0 1 1 0<br>group by 函数<br>group by 函数，作用就是分类汇总。</p>
+<p>exp</p>
+<p>MySQL中的EXP()函数用于将E提升为指定数字X的幂，这里E(2.718281 …)是自然对数的底数。<br>EXP(X)<br>该函数返回E的X次方后的值，如下所示：</p>
+<p>mysql&gt; select exp(3);<br>+——————–+<br>| exp(3)             |<br>+——————–+<br>| 20.085536923187668 |<br>+——————–+<br>1 row in set (0.00 sec)</p>
+<p>mysql&gt;<br>我们可以用 ~ 运算符按位取反的方式得到一个最大值，该运算符也可以处理一个字符串，经过其处理的字符串会变成大一个很大整数足以超过 MySQL 的 Double 数组范围，从而报错输出：</p>
+<p>mysql&gt; select ~(select version());<br>+———————-+<br>| ~(select version())  |<br>+———————-+<br>| 18446744073709551610 |<br>+———————-+<br>1 row in set, 1 warning (0.00 sec)</p>
+<p>mysql&gt; select exp(<del>(select * from(select version())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘5.5.29’ from dual)))’</p>
+<p>mysql&gt; select exp(<del>(select * from(select user())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘root@localhost’ from dual)))’</p>
+<p>mysql&gt; select exp(<del>(select * from(select database())x));<br>ERROR 1690 (22003): DOUBLE value is out of range in ‘exp(</del>((select ‘ctf’ from dual)))’<br>mysql&gt;<br>如上图所示，成功报错并输出了数据。但是事实证明，在 MySQL&gt;5.5.53 之后，exp() 报错不能返回我们的查询结果，而只会得到一个报错：</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" data-id="cm6uorbhc00007sx1226u0up5" data-title="报错注入" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[CISCN 2019 初赛]Love Math</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/">[CISCN 2019 初赛]Love Math</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/">[安洵杯 2019]easy_serialize_php 1</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/01/%E2%80%98%E3%80%90%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0WAF%E7%BB%95%E8%BF%87%E3%80%91%E2%80%99/">‘【文件上传WAF绕过】’</a>
+          </li>
+        
+          <li>
+            <a href="/2025/01/26/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/">[安洵杯 2019]easy_web</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
