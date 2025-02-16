@@ -69,6 +69,45 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-De1CTF-2019-SSRF-Me1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/" class="article-date">
+  <time class="dt-published" datetime="2025-02-16T11:35:21.000Z" itemprop="datePublished">2025-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/16/De1CTF-2019-SSRF-Me1/">[De1CTF 2019]SSRF Me1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先看到有个提示，点开看到flag is in .&#x2F;flag.txt。再打开靶机，看到<br>#! &#x2F;usr&#x2F;bin&#x2F;env python #encoding&#x3D;utf-8 from flask import Flask from flask import request import socket import hashlib import urllib import sys import os import json reload(sys) sys.setdefaultencoding(‘latin1’) app &#x3D; Flask(<strong>name</strong>) secert_key &#x3D; os.urandom(16) class Task: def <strong>init</strong>(self, action, param, sign, ip): self.action &#x3D; action self.param &#x3D; param self.sign &#x3D; sign self.sandbox &#x3D; md5(ip) if(not os.path.exists(self.sandbox)): #SandBox For Remote_Addr os.mkdir(self.sandbox) def Exec(self): result &#x3D; {} result[‘code’] &#x3D; 500 if (self.checkSign()): if “scan” in self.action: tmpfile &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘w’) resp &#x3D; scan(self.param) if (resp &#x3D;&#x3D; “Connection Timeout”): result[‘data’] &#x3D; resp else: print resp tmpfile.write(resp) tmpfile.close() result[‘code’] &#x3D; 200 if “read” in self.action: f &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘r’) result[‘code’] &#x3D; 200 result[‘data’] &#x3D; f.read() if result[‘code’] &#x3D;&#x3D; 500: result[‘data’] &#x3D; “Action Error” else: result[‘code’] &#x3D; 500 result[‘msg’] &#x3D; “Sign Error” return result def checkSign(self): if (getSign(self.action, self.param) &#x3D;&#x3D; self.sign): return True else: return False #generate Sign For Action Scan. @app.route(“&#x2F;geneSign”, methods&#x3D;[‘GET’, ‘POST’]) def geneSign(): param &#x3D; urllib.unquote(request.args.get(“param”, “”)) action &#x3D; “scan” return getSign(action, param) @app.route(‘&#x2F;De1ta’,methods&#x3D;[‘GET’,’POST’]) def challenge(): action &#x3D; urllib.unquote(request.cookies.get(“action”)) param &#x3D; urllib.unquote(request.args.get(“param”, “”)) sign &#x3D; urllib.unquote(request.cookies.get(“sign”)) ip &#x3D; request.remote_addr if(waf(param)): return “No Hacker!!!!” task &#x3D; Task(action, param, sign, ip) return json.dumps(task.Exec()) @app.route(‘&#x2F;‘) def index(): return open(“code.txt”,”r”).read() def scan(param): socket.setdefaulttimeout(1) try: return urllib.urlopen(param).read()[:50] except: return “Connection Timeout” def getSign(action, param): return hashlib.md5(secert_key + param + action).hexdigest() def md5(content): return hashlib.md5(content).hexdigest() def waf(param): check&#x3D;param.strip().lower() if check.startswith(“gopher”) or check.startswith(“file”): return True else: return False if <strong>name</strong> &#x3D;&#x3D; ‘<strong>main</strong>‘: app.debug &#x3D; False app.run(host&#x3D;’0.0.0.0’,port&#x3D;80)<br>对它进行代码审计。<br>if “scan” in self.action:<br>                tmpfile &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘w’)<br>                resp &#x3D; scan(self.param)<br>                if (resp &#x3D;&#x3D; “Connection Timeout”):<br>                    result[‘data’] &#x3D; resp<br>                else:<br>                    print(resp)<br>                    tmpfile.write(resp)<br>                    tmpfile.close()<br>                    result[‘code’] &#x3D; 200<br>            if “read” in self.action:<br>                f &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘r’)<br>                result[‘code’] &#x3D; 200<br>                result[‘data’] &#x3D; f.read()<br>                if result[‘code’] &#x3D;&#x3D; 500:<br>                    result[‘data’] &#x3D; “Action Error”<br>print(resp)并不会真正的回显，而是回显到那个运行这个python代码的主机的命令行里，因此我们要想办法得到回显，就必须read文件。<br>而这里的判断用的是in，而不是&#x3D;&#x3D;。<br>得到签名sign   <a target="_blank" rel="noopener" href="http://106c09ac-2264-44a2-b580-c8f3b38a5923.node5.buuoj.cn:81/geneSign?param=flag.txtread">http://106c09ac-2264-44a2-b580-c8f3b38a5923.node5.buuoj.cn:81/geneSign?param=flag.txtread</a><br>便得到bdba6f540073af64956f11ceefc63ca3<br>添加Cookie发送请求得到flag<br>Cookie: action&#x3D;readscan;sign&#x3D;bdba6f540073af64956f11ceefc63ca3<br>flag{f6d09c77-a645-46a6-b0e8-444a139511cc}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/16/De1CTF-2019-SSRF-Me1/" data-id="cm77l51i00000x4x15cxncw1v" data-title="[De1CTF 2019]SSRF Me1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-WMCTF2020-Make-PHP-Great-Again" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" class="article-date">
@@ -547,76 +586,6 @@
 
 
   
-    <article id="post-Zer0pts2020-Can-you-guess-it" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/01/19/Zer0pts2020-Can-you-guess-it/" class="article-date">
-  <time class="dt-published" datetime="2025-01-19T12:50:41.000Z" itemprop="datePublished">2025-01-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/01/19/Zer0pts2020-Can-you-guess-it/">[Zer0pts2020]Can you guess it?</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>首先打开靶机，发现<br>Can you guess it?<br>If your guess is correct, I’ll give you the flag.</p>
-<p>Source<br>还有一个搜索框，点source，发现一段代码。<br>&lt;?php<br>include ‘config.php’; &#x2F;&#x2F; FLAG is defined in config.php</p>
-<p>if (preg_match(‘&#x2F;config.php/*$&#x2F;i’, $_SERVER[‘PHP_SELF’])) {<br>  exit(“I don’t know what you are thinking, but I won’t let you read it :)”);<br>}</p>
-<p>if (isset($_GET[‘source’])) {<br>  highlight_file(basename($_SERVER[‘PHP_SELF’]));<br>  exit();<br>}</p>
-<p>$secret &#x3D; bin2hex(random_bytes(64));<br>if (isset($_POST[‘guess’])) {<br>  $guess &#x3D; (string) $_POST[‘guess’];<br>  if (hash_equals($secret, $guess)) {<br>    $message &#x3D; ‘Congratulations! The flag is: ‘ . FLAG;<br>  } else {<br>    $message &#x3D; ‘Wrong.’;<br>  }<br>}<br>?&gt;<br><!doctype html></p>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Can you guess it?</title>
-  </head>
-  <body>
-    <h1>Can you guess it?</h1>
-    <p>If your guess is correct, I'll give you the flag.</p>
-    <p><a href="?source">Source</a></p>
-    <hr>
-<?php if (isset($message)) { ?>
-    <p><?= $message ?></p>
-<?php } ?>
-    <form action="index.php" method="POST">
-      <input type="text" name="guess">
-      <input type="submit">
-    </form>
-  </body>
-</html>
-对代码进行分析，首先便看到flag在config.php中。但是如果按照绕过hash_equals的思路来是行不通的，该函数并没有漏洞也没有使用错误。
-但是可以留意到显示源码的逻辑部分故作玄虚没有使用简洁的__FILE__而是采用basename函数截取$_SERVER['PHP_SELF']，本题的利用点也就在此处。
-if (preg_match('/config\.php\/*$/i', $_SERVER['PHP_SELF'])) {
-  exit("I don't know what you are thinking, but I won't let you read it :)");
-}
-
-<p>if (isset($_GET[‘source’])) {<br>  highlight_file(basename($_SERVER[‘PHP_SELF’]));<br>  exit();<br>}<br>$_SERVER[‘PHP_SELF’]会获取我们当前的访问路径，并且PHP在根据URI解析到对应文件后会忽略掉URL中多余的部分，即若访问存在的index.php页面，如下两种UR均会访问到。<br>&#x2F;index.php<br>&#x2F;index.php&#x2F;dosent_exist.php<br>basename可以理解为对传入的参数路径截取最后一段作为返回值，但是该函数发现最后一段为不可见字符时会退取上一层的目录，即：</p>
-<p>$var1&#x3D;”&#x2F;config.php&#x2F;test”<br>basename($var1)	&#x3D;&gt; test<br>$var2&#x3D;”&#x2F;config.php&#x2F;%ff”<br>basename($var2)	&#x3D;&gt;	config.php<br>最后便是通过构造URI让其包含config.php这个文件名再让basename函数截取出来，之后通过请求参数source就能显示config.php的源码，也就能见到flag了。&lt;?php<br>define(‘FLAG’, ‘flag{56994dd6-36ff-4887-ae8f-505ad3879585}’);</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/19/Zer0pts2020-Can-you-guess-it/" data-id="cm63mj1ev0000w4x1f9hb8zdg" data-title="[Zer0pts2020]Can you guess it?" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -653,6 +622,10 @@ if (preg_match('/config\.php\/*$/i', $_SERVER['PHP_SELF'])) {
       <ul>
         
           <li>
+            <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/">[De1CTF 2019]SSRF Me1</a>
+          </li>
+        
+          <li>
             <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/">[WMCTF2020]Make PHP Great Again</a>
           </li>
         
@@ -666,10 +639,6 @@ if (preg_match('/config\.php\/*$/i', $_SERVER['PHP_SELF'])) {
         
           <li>
             <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/">[CISCN 2019 初赛]Love Math</a>
-          </li>
-        
-          <li>
-            <a href="/2025/02/02/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-serialize-php-1/">[安洵杯 2019]easy_serialize_php 1</a>
           </li>
         
       </ul>

